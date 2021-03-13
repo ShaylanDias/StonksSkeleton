@@ -47,3 +47,53 @@ functions:
           path: market
           method: get
           cors: true
+  remove-symbols:
+    handler: remove-symbols.main
+    events:
+      - http:
+          path: symbols
+          method: delete
+          authorizer: aws_iam
+          cors: true
+  create-watchlist:
+    handler: create-watchlist.main
+    events:
+      - http:
+          path: watchlist
+          method: post
+          authorizer: aws_iam
+          cors: true
+  delete-watchlist:
+    handler: delete-watchlist.main
+    events:
+      - http:
+          path: watchlist
+          method: delete
+          authorizer: aws_iam
+          cors: true
+  get-watchlists:
+    handler: get-watchlists.main
+    events:
+      - http:
+          path: watchlist/{id}
+          method: get
+          authorizer: aws_iam
+          cors: true
+  get-own-watchlists:
+    handler: get-watchlists.main
+    events:
+      - http:
+          path: watchlist
+          method: get
+          authorizer: aws_iam
+          cors: true
+  stock-info:
+    handler: stock-info.main
+    events:
+      - http:
+          path: market
+          method: get
+          authorizer: aws_iam
+          cors: true
+
+          

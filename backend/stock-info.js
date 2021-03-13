@@ -11,7 +11,7 @@ export const main = handler(async (event, context) => {
   // This gets symbols from the path parameters (assuming they are sent as a stringified JSON list)
   // const symbols = JSON.parse(event.queryParameters.symbols);
 
-  const symbols = event.queryStringParameters.symbols;
+  const symbols = JSON.parse(event.queryStringParameters).symbols;
   // This combines the JSON list into a comma separated string as specified by the API docs
 
   // Use the API whose documentation is at this URL!

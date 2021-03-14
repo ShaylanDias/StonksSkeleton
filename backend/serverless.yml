@@ -87,13 +87,3 @@ functions:
           method: get
           authorizer: aws_iam
           cors: true
-  stock-info:
-    handler: stock-info.main
-    events:
-      - http:
-          path: market
-          method: get
-          authorizer: aws_iam
-          cors: true
-
-          

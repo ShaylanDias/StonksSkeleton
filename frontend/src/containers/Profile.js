@@ -10,26 +10,40 @@ import LoaderButton from "../components/LoaderButton";
 
 export default function Profile() {
 
-  let data = [{
-    name: "Tesla",
+  const addDataRef = useRef(null);
+
+  const [isAddLoading, setIsAddLoading] = useState(false);
+
+  const [data, setData] = useState([{
+    shortName: "Tesla",
     symbol: "TSLA",
     bid: "The Moon",
   },
   {
-    name: "Apple",
+    shortName: "Apple",
     symbol: "AAPL",
     bid: 123,
   },
   {
-    name: "Microsoft",
+    shortName: "Microsoft",
     symbol: "MSFT",
     bid: 235,
   },
   {
-    name: "PayPal",
+    shortName: "PayPal",
     symbol: "PYPL",
     bid: 189,
-  },]
+  },]);
+
+  const getData = () => {
+    API.get("stonks", `/market?symbols=${addDataRef ? addDataRef.current.value : ""}`)
+    .then(data => {
+      console.log(data);
+      setData(data.quoteResponse.result);
+    })
+    .catch(err => onError(err))
+    .finally(() => setIsAddLoading(false));
+  }
 
   return (
     <div className="Profile">
@@ -37,6 +51,21 @@ export default function Profile() {
         <h1>Stonks</h1>
         <p className="">Welcome to your profile!</p>
       </div>
+      <InputGroup>
+        <FormControl
+          ref={addDataRef}
+          placeholder="Symbols in format AAPL,IBM,TSLA"
+          aria-describedby="basic-addon2"
+        />
+        <InputGroup.Append>
+          <LoaderButton isLoading={isAddLoading} onClick={() => {
+            setIsAddLoading(true);
+            getData();
+          }}>
+            Get Info!
+          </LoaderButton>
+        </InputGroup.Append>
+      </InputGroup>
       <Table>
         <thead>
           <tr>
@@ -48,7 +77,9 @@ export default function Profile() {
         <tbody>
           {data.map(item => {
             return <tr>
-
+                <td>{item.shortName}</td>
+                <td>{item.symbol}</td>
+                <td>{item.bid}</td>
             </tr>
           })}
         </tbody>

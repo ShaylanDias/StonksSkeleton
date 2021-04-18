@@ -12,18 +12,19 @@ import { onError } from "./libs/errorLib";
 
 function App() {
 
-    // TODO Authentication state code here
-  const [isAuthenticated, isAuthenticating, userHasAuthenticated] = [false, false, () => null];
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const [isAuthenticated, userHasAuthenticated] = useState(false);
 
-  // Enables React Router history use
   const history = useHistory();
 
-  // TODO add a useEffect for onLoad which will happen exactly once.
-  
+  useEffect(() => {
+    onLoad();
+  }, []);
+
   async function onLoad() {
     try {
-      // TODO make call to authenticate
-      // Set state to authenticated
+      await Auth.currentSession();
+      userHasAuthenticated(true);
     }
     catch(e) {
       if (e !== 'No current user') {
@@ -31,29 +32,30 @@ function App() {
       }
     }
   
-    // TODO set state to is authenticating
+    setIsAuthenticating(false);
   }
 
   async function handleLogout() {
-    // TODO Amplify Auth call
-    // Set Authentication State
+    await Auth.signOut();
 
+    userHasAuthenticated(false);
     history.push("/login");
   }
 
-  // This is set up to return a Navbar which uses bootstrap styling based on the authenticated/authenticating states of this program.
-  // Below that is a react-router object using a context provider hook (see libs/contextLib.js) to send authentication status.
   return (
     !isAuthenticating && (
-      <div className="">
-        {/* You can change the styling on Navbar and other Bootstrap components by changing props!
-        Take a look at the react-bootstrap docs: https://react-bootstrap.github.io/components/alerts */}
+      <div className="App container py-3">
         <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
           <LinkContainer to="/">
             <Navbar.Brand className="font-weight-bold text-muted">
               Stonks
             </Navbar.Brand>
           </LinkContainer>
+          {isAuthenticated && <LinkContainer to="/profile">
+            <Navbar.Brand className="font-weight-bold text-muted">
+              Profile
+            </Navbar.Brand>
+          </LinkContainer>}
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Nav activeKey={window.location.pathname}>
@@ -72,7 +74,6 @@ function App() {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-
         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
           <Routes />
         </AppContext.Provider>

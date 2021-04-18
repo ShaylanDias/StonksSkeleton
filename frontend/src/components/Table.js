@@ -46,10 +46,38 @@ export default function Table({ tableData, getWatchlists}) {
         <thead>
           <tr>
             <th>Symbol</th>
+            {isUserTable &&
+                  <td>
+                    <Button variant="danger" onClick={removeSymbol.bind(this, item.symbol, tableData.watchlistId)}>
+                      X
+                      </Button>
+                  </td>
+                }
           </tr>
         </thead>
         <tbody>
 
+        {isUserTable &&
+            <tr>
+              <td>
+                <InputGroup className="mb-3">
+                  <FormControl
+                    ref={formRef}
+                    placeholder="Add Symbol"
+                    aria-describedby="basic-addon2"
+                  />
+                  <InputGroup.Append>
+                    <LoaderButton isLoading={false} onClick={() => addSymbol(formRef.current.value, tableData.watchlistId)}>Add</LoaderButton>
+                  </InputGroup.Append>
+                </InputGroup>
+              </td>
+              <td>
+                <Button variant="danger" onClick={deleteWatchlist.bind(this, tableData.watchlistId)}>
+                  Delete
+                  </Button>
+              </td>
+            </tr>
+          }
         </tbody>
       </BootstrapTable>
     </React.Fragment>

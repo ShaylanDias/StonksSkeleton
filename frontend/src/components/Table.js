@@ -46,17 +46,31 @@ export default function Table({ tableData, getWatchlists}) {
         <thead>
           <tr>
             <th>Symbol</th>
-            {isUserTable &&
+          </tr>
+        </thead>
+        <tbody>
+        {tableData.symbols.map(item => {
+            return item === null ?
+              null
+              :
+              <tr key={item.symbol}>
+                <td>{item.symbol}</td>
+                <td>{item.longName}</td>
+                <td>{item.bid}</td>
+                <td>{item.fiftyDayAverage}</td>
+                <td>{item.regularMarketChange}</td>
+                <td>{item.regularMarketChangePercent}</td>
+                <td>{item.pegRatio}</td>
+                <td>{item.dividendYield}</td>
+                {isUserTable &&
                   <td>
                     <Button variant="danger" onClick={removeSymbol.bind(this, item.symbol, tableData.watchlistId)}>
                       X
                       </Button>
                   </td>
                 }
-          </tr>
-        </thead>
-        <tbody>
-
+              </tr>
+          })}
         {isUserTable &&
             <tr>
               <td>

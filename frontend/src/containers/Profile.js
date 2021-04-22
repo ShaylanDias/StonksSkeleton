@@ -14,6 +14,24 @@ export default function Profile() {
 
   const [isAddLoading, setIsAddLoading] = useState(false);
 
+  const [watchlists, setWatchlists] = useState([]);
+
+  const getWatchlists = () => {
+    API.get("stonks", "/watchlist/")
+    .then(res => {
+      console.log(res);
+      setWatchlists(res);
+    })
+    .catch(err => {
+      console.log(err);
+      onError(err);
+    });
+  }
+
+  useEffect(() => {
+    getWatchlists();
+  }, []);
+
   const [data, setData] = useState([{
     shortName: "Tesla",
     symbol: "TSLA",

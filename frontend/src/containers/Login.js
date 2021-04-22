@@ -28,9 +28,11 @@ export default function Login() {
 
     try {
       await Auth.signIn(fields.email, fields.password);
+      console.log("SIGNED IN\n");
       userHasAuthenticated(true);
       history.push("/profile");
     } catch (e) {
+      console.log("ERRORED SIGN IN\n");
       onError(e);
       setIsLoading(false);
     }
